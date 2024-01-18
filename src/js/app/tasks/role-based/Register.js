@@ -16,22 +16,6 @@ class Register extends React.Component {
     }
 
     render() {
-
-        if (localStorage.getItem("current-path") === null) {
-            localStorage.setItem("current-path", '/role-based/');
-        } else if (localStorage.getItem("current-path") !== '/role-based/') {
-            this.props.history.replace({
-                pathname: localStorage.getItem("current-path")
-            });
-        }
-
-
-        if (localStorage.getItem("invalid-user") === "true") {
-            this.props.history.replace({
-                pathname: '/disq'
-            });
-        }
-
         return <Form
             formData={formData()}
             onComplete={this.onComplete}
@@ -57,12 +41,9 @@ class Register extends React.Component {
                 localStorage.setItem("current-topic", 0);
                 if ('topics' in res.taskData) {
                     SyncStore.emitUserJoinGroup(true);
-                    localStorage.setItem("timer-start", Date.now());
-                    localStorage.setItem("current-path", '/role-based/description');
                     this.props.history.replace('/role-based/description');
                 } else {
                     SyncStore.emitUserJoinGroup(false);
-                    localStorage.setItem("current-path", '/role-based/wait');
                     this.props.history.replace('/role-based/wait');
                 }
             }
@@ -84,68 +65,23 @@ const formData = function() {
         type: "html",
         name: "start",
         html: `
-        <h3>Requirements</h3>
-        <img  src='/img/list.png' width="50" style="margin-left: 20px;margin-bottom: 20px;"alt='participants'/>
-        </br>
+        <h3>Requirements:</h3>
         <ol type="1">
             <li>
-                Your browser is compatible with our study's requirements.
+                <a href="https://www.whatismybrowser.com/" target="_blank">Check here</a> if the version of your browser meets our requirements:
+                Google Chrome version 47 (or higher) and Mozilla Firefox version 44 (or higher).
             </li>
-            <li>You will need approximately 60 minutes to complete the whole study.</li>
-            <li>We require you to be active in our study in order to receive payment.</li>
-            <li>This is a collaborative study: this means you will be interacting with other participants during the experiment. </li>
+        </ol>
         
-        </ol>
-        <img src='/img/noun_users_64757.png' width="150" style="margin-left: auto;margin-right:auto;display: block;"alt='participants'/>
         <hr/>
 
-        <h3>The Experiment</h3>
-        <img  src='/img/experiment.png' width="50" style="margin-left: 20px;margin-bottom: 20px;"alt='participants'/>
-        </br>
-        In this study, you are tasked with searching for a number of documents in a collection of news articles with fellow users. The experiment has four main parts:
-            <ol type="-">
-            <li><strong>Pre-questionnaire</strong>: we will ask about your experience searching the Web with other users before.</li>
-            <li><strong>Waiting phase</strong>: we will try to find a group of participants, and you will start the next phase (at least 10 minutes). You can play Tetris while you wait.</li>
-            <li><strong>Collaborative search phase</strong>: you and your fellow participants will be given three different topics to work together on, and each takes about 15 minutes to complete. </li>
-            <img src='/img/noun_user group_326172.png' width="100" style="margin-left: 30px;margin-bottom: 20px;" alt='participants'/>
-            <img src='/img/noun_Web Search_1173263.png' width="120" style="margin-left: 30px;margin-bottom: 20px;" alt='participants'/>
-            <li><strong>Post-questionnaire</strong>: we will ask about how was your overall experience with our experiment.
-            </ol>
-        <p> We have a few important points: </p>
-        <ol type="-">
-            <li>
-                <p>
-                Only make use of the interface that we provide. Do not use another web search interface to dry run your queries. 
-                Do not switch browser tabs–-after three tab switches we will cancel your participation.
-                </p>
-            </li>
-            <li>
-                <p>You can interact with the search results. 
-                    A click on a document snippet will open this document in our own document viewer. 
-                    We know that this document viewer is not perfect, but please stick with it. 
-                </p>
-            </li>
-            <li>
-            <p>You will search a collection of news articles. These are not the most recent news articles. </p>
-            </li>
-            <li> 
-                <p>
-                Keep your queries in line with the information need. 
-                For example, please do not issue queries for a prior topic once you have begun the search process for a new topic. Keep the queries you issue (and subsequently select) on point, and relevant to the topic outline provided on the right of the search interface.
-                If you begin issuing queries that are totally off topic (e.g. queries on ice skating, Brexit, or anything else you can think of), we will cancel your participation.
-                </p>
-            </li>
-
-            <li> 
-            <p>
-            The system will guide you forward to new pages. <b>DO NOT PRESS THE BROWSER BACK BUTTON!</b> This may bring unexpected behaviour and you will not be able to move forward again.
-            </p>
-        </li>
-        </ol>
+        <h3>
+            In this study, you are tasked with searching a collection of news articles with fellow users. You will be given three different topics to work on and each takes about 10 minutes to complete. At the end we have an exit questionnaire for you. 
+        </h3>
 
 
         <hr/>
-        <h3>Thank you for your contribution and time!</h3>
+        <h3>You will need approximately 45 minutes to complete the whole study.</h3>
         `
     });
 
@@ -297,7 +233,7 @@ const formData = function() {
         });
 
         elements.push({
-            title: "Describe what you were looking for. As an example, you may be a husband and wife planning a trip for your family, a group of students working on a writing assignment and sharing search results/findings, or a couple shopping for a new sofa.",
+            title: "Describe what were you looking for. (e.g. husband and wife planning a trip for the family, a group of students working on a writing assignment and sharing search results/findings, a couple shopping for a new sofa, etc.)",
             name: "collab-information-need",
             type: "comment",
             inputType: "text",
@@ -307,31 +243,11 @@ const formData = function() {
         });
 
         elements.push({
-            title: "How many others did you collaborate with (not including yourself)?",
+            title: "With how many others did you collaborate (not including yourself)?",
             name: "collab-members",
             type: "text",
             width: 600,
             inputType: "number",
-            isRequired: true
-        });
-
-        elements.push({
-            title: "Given the example scenario you provided above, describe how you and your partner/friend/colleague performed the search activity. As examples of what we are interested in, did one person perform all the exploratory searching, with another examining the findings in detail? Or did each person involved look after individual components of the search activity (e.g. when booking a holiday, did one person focus on booking flights, with another looking at a hotel)?",
-            name: "collab-information-setting",
-            type: "comment",
-            inputType: "text",
-            width: 600,
-            rows: 1,
-            isRequired: true
-        });
-
-        elements.push({
-            title: "When performing the example scenario you provided, how did you communicate with others you were performing the search activity with?",
-            name: "collab-information-communication",
-            type: "comment",
-            inputType: "text",
-            width: 600,
-            rows: 1,
             isRequired: true
         });
 

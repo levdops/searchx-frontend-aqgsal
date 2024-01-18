@@ -24,18 +24,27 @@ export default class QueryHistoryContainer extends React.Component {
         this.popupHandler = this.popupHandler.bind(this);
     }
 
-    componentDidMount() {QueryHistoryStore.addChangeListener(this.changeHandler);}
+    componentWillMount() {QueryHistoryStore.addChangeListener(this.changeHandler);}
     componentWillUnmount() {QueryHistoryStore.removeChangeListener(this.changeHandler);}
+    componentWillReceiveProps(nextProps) {
+        if (this.state.popup) {
+            this.setState({
+                popup: false
+            });
+        }
+    }
     shouldComponentUpdate(nextProps, nextState) {
         return this.state !== nextState;
     }
 
     render() {
+        
         return <QueryHistory
             history={this.state.history}
             popup={this.state.popup}
             clickHandler={queryClickHandler}
             popupHandler={this.popupHandler}
+            test = {this.props.test}
         />
     }
 

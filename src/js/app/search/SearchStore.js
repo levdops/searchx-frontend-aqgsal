@@ -128,38 +128,42 @@ const SearchStore = Object.assign(EventEmitter.prototype, {
         if (state.tutorial) {
             return [
                 {
+                    page_name: "Page Name 1",
                     name: "You can view the first result here",
+                    heading: "Heading-1",
+                    subheading: 'SubHeading-1',
                     id: "1",
+                    url: "1",
+                    title: "The title of the first result. ",
                     snippet: "This is the first result...",
+                    content: "This is the first result...",
+                    pubtime: "2020-03-19",
                     metadata: {}
                 },
                 {
+                    page_name: "Page Name 2",
                     name: "You can view the second result here",
+                    heading: "Heading-2",
+                    subheading: 'SubHeading-2',
                     id: "2",
+                    url: "2",
+                    title: "The title of the second result. ",
                     snippet: "This is the second result...",
-                    metadata: {
-                        bookmark: {userId: AccountStore.getUserId(), date: new Date()},
-                        views: 10,
-                        rating: {total: -5, rating: 0},
-                        annotations: [1]
-                    }
-                },
-                {
-                    name: "You can view the third result here",
-                    id: "3",
-                    snippet: "This is the third result...",
-                    metadata: {bookmark: {userId: 'test', date: new Date() - 2000}}
-                },
-                {
-                    name: "You can view the fourth result here",
-                    id: "4",
-                    snippet: "This is the fourth result...",
+                    content: "This is the second result...",
+                    pubtime: "2020-03-19",
                     metadata: {}
                 },
                 {
-                    name: "You can view the fifth result here",
-                    id: "5",
-                    snippet: "This is the fifth result...",
+                    page_name: "Page Name 3",
+                    name: "You can view the third result here",
+                    heading: "Heading-3",
+                    subheading: 'SubHeading-3',
+                    id: "3",
+                    url: "3",
+                    title: "The title of the third result. ",
+                    snippet: "This is the third result...",
+                    content: "This is the third result...",
+                    pubtime: "2020-03-19",
                     metadata: {}
                 }
             ];
@@ -294,9 +298,9 @@ const _search = (query, vertical, page) => {
                 for (let i = 0; i < results.length; i++) {
                     results[i].position = i;
                 }
-
                 state.results = results;
                 state.matches = res.body.matches;
+		state.matches.value = Math.min(state.matches.value, 50);
                 state.serpId = res.body.id;
             }
 
@@ -316,6 +320,15 @@ const _search = (query, vertical, page) => {
                 elapsedTime: state.elapsedTime,
                 session: localStorage.getItem("session-num")
             });
+            
+            if (window.hasOwnProperty('LogUI') && window.LogUI.isActive()) {
+                window.LogUI.logCustomMessage({
+                    name: 'QUERY_RETURNED',
+                    query: state.query,
+                    elapsedSearchTime: state.elapsedTime,
+                    provider: state.provider,
+                })
+            }
 
             SearchStore.emitChange();
             SessionActions.getQueryHistory();
@@ -346,7 +359,7 @@ const _getById = function (id) {
 
                 state.activeDoctext = doctext;
             }
-
+            
             SyncStore.emitViewState(id);
             SearchStore.emitChange();
         });

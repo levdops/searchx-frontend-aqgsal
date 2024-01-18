@@ -128,7 +128,7 @@ class Session extends React.PureComponent {
             <TaskedSession>
                 <div className="box" style={{marginBottom: '20px', textAlign: 'center'}}>
                     <Timer start={this.state.start} duration={constants.taskDuration} onFinish={this.onFinish} style={{fontSize: '2em'}}/>
-                    <Link className={"btn btn-primary" + (this.state.finished ? '' : ' disabled')} to="/sync/posttest" role="button">
+                    <Link className={"btn btn-primary" + (this.state.finished ? '' : ' disabled')} to="/sync/posttest" role="button" style={{float: 'right'}}>
                         To Final Test
                     </Link>
                 </div>

@@ -43,19 +43,6 @@ class PostTest extends React.Component {
     }
 
     render() {
-
-        if (localStorage.getItem("current-path") !== '/role-based/posttest') {
-            this.props.history.replace({
-                pathname: localStorage.getItem("current-path")
-            });
-        }
-
-        if (localStorage.getItem("invalid-user") === "true") {
-            this.props.history.replace({
-                pathname: '/disq'
-            });
-        }
-
         return <Form
             formData={formData(this.state.returnCode)}
             onComplete={this.onComplete}
@@ -93,7 +80,7 @@ const formData = function(returnCode) {
     elements.push({
         type: "html",
         name: "collab-feedback-description",
-        html: "<b><p>DO NOT PRESS THE BROWSER BACK BUTTON! This will invalidate your participation!</p> <p>We would like you to describe your search experience.</p></b>"
+        html: "<b>We would like you to describe your search experience.</b>"
     });
     
 
@@ -166,42 +153,6 @@ const formData = function(returnCode) {
     });
 
     elements.push({
-        title: "It was easy to understand what was my job in the task.",
-        name: "role",
-        type: "rating",
-        isRequired: true,
-        minRateDescription: "Disagree",
-        maxRateDescription: "Agree"
-    });
-
-    elements.push({
-        title: "I could communicate well with my partners.",
-        name: "communicate",
-        type: "rating",
-        isRequired: true,
-        minRateDescription: "Disagree",
-        maxRateDescription: "Agree"
-    });
-
-    elements.push({
-        title: "I could see what they others were searching and examining during the task.",
-        name: "awareness",
-        type: "rating",
-        isRequired: true,
-        minRateDescription: "Disagree",
-        maxRateDescription: "Agree"
-    });
-
-    elements.push({
-        title: "It was easy to share what I found useful during my searches with my partners.",
-        name: "share",
-        type: "rating",
-        isRequired: true,
-        minRateDescription: "Disagree",
-        maxRateDescription: "Agree"
-    });
-
-    elements.push({
         title: "Did you find the collaborative features useful?",
         name: "collab-rating",
         type: "matrix",
@@ -234,10 +185,6 @@ const formData = function(returnCode) {
                 value: "bookmarks",
                 text: "Saved documents"
             }, {
-                value: "chat",
-                text: "Chat tool"
-            },
-            {
                 value: "hidden-results",
                 text: "Hiding saved and excluded results"
             }

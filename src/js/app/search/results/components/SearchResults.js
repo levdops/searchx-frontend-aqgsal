@@ -35,22 +35,22 @@ const SearchResults = function ({
     const style = {
         color: "darkgray"
     };
-
+    // console.log("SEARCH1",results)
     if (searchState.query === '' && results.length === 0) {
-        return <CenteredMessage height="800px" style={style}>
-            <h3> Your search results will appear here :) </h3>
+        return <CenteredMessage height="650px" style={style}>
+            <h3 left="150px"> Your search results will appear here :) </h3>
         </CenteredMessage>
     }
 
     if (progress.resultsNotFound) {
-        return <CenteredMessage height="800px" style={style}>
-            <h3> Sorry! :`( </h3>
+        return <CenteredMessage height="650px" style={style}>
+            <h3 left="150px"> Sorry! :`( </h3>
             <h4> We have not found results for you! Try to shorten your query! </h4>
         </CenteredMessage>
     }
 
     if (!tutorial && !progress.finished) {
-        return <CenteredMessage height="800px">
+        return <CenteredMessage height="650px">
             <Loader/>
         </CenteredMessage>
     }
@@ -77,7 +77,10 @@ const SearchResults = function ({
     let list = [];
     let lastCollapsedResults = [];
     let lastCollapsedResultsComponents = [];
+    // console.log("SEARHC", results)
     for (const [index, result] of results.entries()) {
+        // console.log("SEARHC", result)
+        if (index < 10){
         const collapsedResult = distributionOfLabour && collapsed[Helpers.getId(result)];
 
         const resultProps = {
@@ -116,7 +119,7 @@ const SearchResults = function ({
         } else {
             list.push(<SearchResultContainer {...resultProps} key={Helpers.getId(result)} index={index}/>);
         }
-
+    }
 
     }
     if (lastCollapsedResults.length > 0) {
@@ -138,17 +141,18 @@ const SearchResults = function ({
                 {config.interface.timeIndicator && results.length > 0 &&
                 <div className="time"> {timeIndicator}</div>
                 }
-                {distributionOfLabour === "unbookmarkedSoft" &&
-                <div className="collapsedText">
-                    {/* <Button className="allCollapsedResultsButton" onClick={showAllCollapsedResults}
-                            disabled={allBookmarkedResultsShown}>
-                        Show all hidden results
-                    </Button> */}
-                    <Button variant="light" className="allCollapsedResultsButton" onClick={hideAllCollapsedResults}
-                            disabled={allBookmarkedResultsHidden}>
-                        Hide all saved results
-                    </Button>
-                </div>
+                {
+                // distributionOfLabour === "unbookmarkedSoft" &&
+                // <div className="collapsedText">
+                //     {/* <Button className="allCollapsedResultsButton" onClick={showAllCollapsedResults}
+                //             disabled={allBookmarkedResultsShown}>
+                //         Show all hidden results
+                //     </Button> */}
+                //     <Button variant="light" className="allCollapsedResultsButton" onClick={hideAllCollapsedResults}
+                //             disabled={allBookmarkedResultsHidden}>
+                //         Hide all saved results
+                //     </Button>
+                // </div>
                 }
                 <div className="list">
                     {list}

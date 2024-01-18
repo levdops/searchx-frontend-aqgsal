@@ -1,17 +1,14 @@
 import './SearchHeader.pcss'
 import React from 'react';
 
-
-const SearchBox = function({query, changeHandler, showSuggestionsHandler}) {
+const SearchBox = function({query, changeHandler}) {
     return (
         <div className="box">
             <div className="input-group">
                 <input type="text" className="form-control" name="query" placeholder=""
                        value={query}
                        onChange={e => changeHandler(e.target.value)}
-                       autoComplete={'off'}
-                       onFocus={showSuggestionsHandler}
-                       onClick={showSuggestionsHandler}
+                       autoComplete={'off'} autoFocus
                 />
 
                 <span className="input-group-btn">

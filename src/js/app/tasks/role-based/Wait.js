@@ -14,6 +14,7 @@ import './RoleBased.pcss';
 import Timer from "../components/Timer";
 import {Button} from "react-bootstrap";
 import SearchActions from "../../../actions/SearchActions";
+import Tetris from './Tetris';
 
 class Wait extends React.Component {
     constructor(props) {
@@ -72,37 +73,19 @@ class Wait extends React.Component {
     }
 
     handleUnload() {
-        if (!this.state.isReady & localStorage.getItem("current-path") === '/role-based/wait') {
+        if (!this.state.isReady) {
             this.onLeave();
         }
     }
 
     render() {
-
-        // if (localStorage.getItem("current-path") !== '/role-based/wait') {
-        //     this.props.history.replace({
-        //         pathname: localStorage.getItem("current-path")
-        //     });
-        // }
-
-        // if (localStorage.getItem("invalid-user") === "true") {
-        //     this.props.history.replace({
-        //         pathname: '/disq'
-        //     });
-        // }
-
-        const Tetris = <iframe title="Tetris" scrolling="yes"
-        frameBorder="0" className="Tetris"
-        src={`${process.env.REACT_APP_TETRIS}`} height>
-        </iframe>
-
         return <div className="Wait waitBox">
             <div>
                 <h2>Waiting for your group members...</h2>
                 <h3>Time elapsed :
                 <Timer start={this.state.start} duration={constants.waitDuration} onFinish={this.onFinish} style={{fontSize: '2em'}}/></h3>
                 <p>Please do not refresh or close this page. If you turn on your audio you can switch to other tabs or applications, we will try to play a notification sound when you can start the task. Please check the tab again regularly, because the sound may not play in the background in some browsers.</p>
-                <p>The task will start after your group forms. This may take a few minutes, at most {constants.waitDuration}. If we do not find a group for you, you will do the task alone.</p>
+                <p>The task will start after your group forms. This may take a few minutes, at most {constants.waitDuration}.</p>
                 <p>You can play Tetris to pass the time if you want to:</p>
                 <Button onClick={() => {
                     if (!this.state.open){
@@ -114,12 +97,13 @@ class Wait extends React.Component {
                 }>
                     {this.state.open ? "Close Tetris" : "Play Tetris"}
                 </Button>
-                {this.state.open ? Tetris : <div/> }
+                {this.state.open ? <Tetris/> : <div/> }
             </div>
         </div>
     }
 
     onSync(data) {
+        console.log(data);
         if (data.newUser === AccountStore.getUserId()) {
             SyncStore.emitSyncLeaveGroup();
             SessionStore.setGroup(data.newGroup._id, data.newGroup.members);
@@ -138,7 +122,7 @@ class Wait extends React.Component {
                 state : this.state
             });
 
-            localStorage.setItem("current-path", '/role-based/description');
+        
             this.props.history.replace({
                 pathname: '/role-based/description',
                 state: { waited: true }
@@ -154,7 +138,6 @@ class Wait extends React.Component {
 
         SyncStore.emitSyncLeave();
         AccountStore.clearUserData();
-        //localStorage.setItem("invalid-user", true.toString());
     }
 
     onTimeout() {

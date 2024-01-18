@@ -42,7 +42,7 @@ export default class SearchResultsContainer extends React.Component {
         this.isCollapsible = this.isCollapsible.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         SearchStore.addChangeListener(this._onChange);
     }
 
@@ -152,9 +152,10 @@ export default class SearchResultsContainer extends React.Component {
     ////
 
     isCollapsible(result) {
-        return this.state.distributionOfLabour
-            && !this.state.tutorial
-            && (result.metadata.bookmark || result.metadata.exclude);
+        // return this.state.distributionOfLabour
+        //     && !this.state.tutorial
+        //     && (result.metadata.bookmark || result.metadata.exclude);
+        return false
     }
 
     render() {

@@ -26,7 +26,7 @@
     }
 
     .SearchResult {
-
+        display: inline-block;
 
         .lineContainer {
             display: flex;
@@ -198,7 +198,20 @@
                 background-color: black;
             }
         }
+        .result-text-space {
+            margin-bottom: 200px;
+            margin-left: 0;
 
+            p {
+                max-width: 700px;
+            }
+
+            h2 {
+                max-width: 700px;
+            }
+            a { pointer-events: none}
+
+        }
         .result-text {
             margin-bottom: 15px;
             margin-left: 0;
@@ -210,7 +223,7 @@
             h2 {
                 max-width: 700px;
             }
-
+           
         }
     }
 
@@ -247,6 +260,10 @@
 .text-center {
     margin-left: 30px;
     color: $primary-color;
+    position: flex;
+    top:1000px;
+    right: 600px;
+    text-align: center;
 }
 .page-item.active .page-link {
     background-color: $primary-color;

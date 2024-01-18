@@ -16,8 +16,18 @@ export default class SearchResultContainer extends React.Component {
         super(props);
         this.urlClickHandler = this.urlClickHandler.bind(this);
         this.bookmarkClickHandler = this.bookmarkClickHandler.bind(this);
+        // this.bookmarkCheckHandler = this.bookmarkCheckHandler.bind(this);
         this.excludeClickHandler = this.excludeClickHandler.bind(this);
     }
+
+    componentWillReceiveProps(nextProps) {
+        if('metadata' in nextProps.result) {
+            if (nextProps.result.metadata.bookmark) {
+                nextProps.result.metadata.bookmark.userColor = AccountStore.getMemberColor(nextProps.result.metadata.bookmark.userId);
+            }
+        }
+    }
+
     ////
 
     urlClickHandler(url, doctext) {
@@ -36,82 +46,13 @@ export default class SearchResultContainer extends React.Component {
 
         localStorage.setItem('visited-urls', JSON.stringify(visitedUrls));
     }
-
+    
     bookmarkClickHandler() {
-        let action = "";
-        const id = this.props.result.url ? this.props.result.url : this.props.result.id;
-        const index = this.props.index;
-        if (this.props.result.metadata.bookmark) {
-            action = "remove";
-            SessionActions.removeBookmark(id);
-            SearchStore.modifyMetadata(id, {
-                bookmark: null
-            });
-        } else {
-            action = "add";
 
-            SessionActions.addBookmark(id, this.props.result.name);
-            if (this.props.result.metadata.exclude) {
-                SessionActions.removeExclude(id);
-            }
-
-            SearchStore.modifyMetadata(id, {
-                bookmark: {
-                    userId: AccountStore.getUserId(),
-                    date: new Date()
-                },
-                exclude: null
-            });
-            if (this.props.autoHide) {
-                this.props.hideCollapsedResultsHandler([id]);
-            }
-        }
-
-        log(LoggerEventTypes.BOOKMARK_ACTION, {
-            url: id,
-            action: action,
-            index: index,
-            session: localStorage.getItem("session-num") || 0,
-        });
     };
 
     excludeClickHandler() {
-        let action = "";
-        const id = this.props.result.url ? this.props.result.url : this.props.result.id;
-        const index = this.props.index;
-        if (this.props.result.metadata.exclude) {
-            action = "remove";
-            SessionActions.removeExclude(id);
-            SearchStore.modifyMetadata(id, {
-                exclude: null
-            });
-        }
-        else {
-            action = "add";
 
-            SessionActions.addExclude(id, this.props.result.name);
-            if (this.props.result.metadata.bookmark) {
-                SessionActions.removeBookmark(id);
-            }
-
-            SearchStore.modifyMetadata(id, {
-                exclude: {
-                    userId: AccountStore.getUserId(),
-                    date: new Date()
-                },
-                bookmark: null
-            });
-            if (this.props.autoHide) {
-                this.props.hideCollapsedResultsHandler([id]);
-            }
-        }
-
-        log(LoggerEventTypes.EXCLUDE_ACTION, {
-            url: id,
-            action: action,
-            index: index,
-            session: localStorage.getItem("session-num") || 0,
-        });
     }
 
     ////
@@ -124,6 +65,7 @@ export default class SearchResultContainer extends React.Component {
             result={this.props.result}
             urlClickHandler={this.urlClickHandler}
             bookmarkClickHandler={this.bookmarkClickHandler}
+            // bookmarkCheckHandler = {this.bookmarkCheckHandler}
             provider={this.props.provider}
             collapsed={this.props.collapsed}
             excludeClickHandler={this.excludeClickHandler}

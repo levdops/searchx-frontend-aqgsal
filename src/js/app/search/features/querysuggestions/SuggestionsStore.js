@@ -31,7 +31,7 @@ const SuggestionStore = Object.assign(EventEmitter.prototype, {
             case ActionTypes.GET_SUGGESTIONS:
                 _get(action.payload.query);
                 break;
-            case ActionTypes.CLEAR_SUGGESTIONS:
+	    case ActionTypes.CLEAR_SUGGESTIONS:
                 _clear();
                 break;
             default:
@@ -43,7 +43,6 @@ const SuggestionStore = Object.assign(EventEmitter.prototype, {
 const _clear = function(){
     state.suggestions = [];
 }
-
 
 
 ////

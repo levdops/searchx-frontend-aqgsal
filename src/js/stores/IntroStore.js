@@ -16,6 +16,7 @@ const intro = introJs().setOptions({
     showBullets: false,
     exitOnOverlayClick: false,
     exitOnEsc: false,
+    hideNext: true,
     disableInteraction: true
 });
 
@@ -41,10 +42,6 @@ const IntroStore = Object.assign(EventEmitter.prototype, {
 
         intro.setOption('steps', steps);
         const oncomplete = () => {
-            let elapsed = new Date() - localStorage.getItem("timer-start");
-            if (elapsed > (3 * 60 * 1000)) {
-                localStorage.setItem("invalid-user", true.toString());
-            }
             localStorage.setItem("intro-done", true.toString());
             log(LoggerEventTypes.SURVEY_INTRO_END, {
                 end: Date.now()
@@ -52,6 +49,12 @@ const IntroStore = Object.assign(EventEmitter.prototype, {
             SearchStore.removeSearchTutorialData();
             QueryHistoryStore.removeQueryHistoryTutorialData();
             BookmarkStore.removeBookmarksTutorialData();
+
+            if (window.LogUI && window.LogUI.isActive()) {
+                window.LogUI.logCustomMessage({
+                    name: 'TUTORIAL_COMPLETED'
+                });
+            }
 
             callback();
         };

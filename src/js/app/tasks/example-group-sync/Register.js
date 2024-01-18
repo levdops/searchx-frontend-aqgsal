@@ -25,6 +25,7 @@ class Register extends React.Component {
     ////
 
     onComplete(data) {
+        console.log(data)
         log(LoggerEventTypes.SURVEY_REGISTER_RESULTS, {
             data: data
         });
@@ -42,9 +43,9 @@ class Register extends React.Component {
             if (res) {
                 
                 if ('topic' in res.taskData) {
-                    this.props.history.push('/sync/session');
+                    this.props.history.push('/ssal/session');
                 } else {
-                    this.props.history.push('/sync/pretest');
+                    this.props.history.push('/ssal/pretest');
                 }
             }
         });
@@ -65,55 +66,78 @@ const formData = function() {
         type: "html",
         name: "start",
         html: `
-        <h3>Search as Learning: spend an hour to learn about a topic by searching the web with our search engine!</h3>
+        <h3>Find the relevant documents!</h3>
+        
+
+        <hr/>
+        <p> We want you to search and find relevant documents for the topic
+        <b>Wildlife Extinction</b> in this task. </p>
+
+
+        <p>You can interact with the search engine by issuing queries on the 
+        query bar or clicking on previously submitted queries on the query 
+        history widget. There are <b>over 150</b> relevant documents on the 
+        topic. Mark documents that you think are relevant using the bookmark
+         icon <i class="fa fa-bookmark-o" aria-hidden="true"></i> next to the 
+         document title.</p>
+        
+        <p>We will be giving bonuses to the participants that identify the 
+        most relevant documents, but only those. We do not expect you to find 
+        all relevant documents. Marking non-relevant documents will therefore 
+        hamper your chances of receiving a bonus.</b>
+        <hr/>
+
+        <h4> More information on the topic:</h4>
+            <p>A few years ago, a debate arose about the conservation of the 
+            spotted owl in America, highlighting the U.S. efforts to prevent 
+            the extinction of wildlife species. What is not well known is the 
+            effort of other countries to prevent the demise of species native 
+            to their countries.  What other countries have begun efforts to 
+            prevent such declines? </p>
+
+            <p><b>A relevant item will specify the country, the involved 
+            species, and steps taken to save the species.</b></p>
         
         <hr/>
-        <p>The setup of the hour consists of five tests and four search phases:</p>
-        <div align="center">
-            <img src ="img/journey.png" width="650" height="50">
-        </div>
-        <br/>
-        <p> Each test ask you different questions about your knowledge on one or more topics - please answer the questions truthfully. 
-        Your payment is not affected by the number of correct or incorrect answers. 
-        Most questions are multiple-choice questions, in the last test we ask you to write a summary about one topic too.
-        When you write the summary you will have access to the web documents that you saved during the search phases. </p>
+
+
+        <p>During the search phase, we want you to use our custom web search 
+        system to search about the topic –- you find a description of your topic 
+        again on the right-hand side of the search interface. </br>
+        Our search interface has a few items that should help you on your task
+        –-we will introduce them to you on the next screen. </p>
+    aa
         
-        <p>During the search phases we want you to use our custom web search system to learn about one topic –- you find a description of your topic on the right-hand side of the search interface. 
-        From time to time (this happens automatically) you will be asked to answer test questions again. 
-        Once they are answered, you continue reading and searching to learn more about the topic. 
-        Our search interface has a few items that should help you to learn and search–-we will introduce them to you on the next screen. </p>
-        
-        <p>You are required to search for documents, read them and learn about that topic for at 
-        least 20 minutes–-our interface has a timer, so you can see how much time you already spent searching. 
-        After 20 minutes you can move on to the final test by clicking on the <span style="background-color: #00A6D3"><font color="white">To Final Test</span></font> button. 
-        You can also keep searching for a bit longer and then move on.</p>
+        <p>You must search for documents, read them and mark the 
+        ones that you think are relevant to the topic.
+        When you are satisfied, you can click on the 
+        <span style="background-color: #00A6D3"><font color="white">To Final Test</span></font>
+        button to finish your session and go to a quick questionnaire about your experience.</p>
 
         <p> We have a few important points: </p>
         <ol type="-">
             <li>
                 <p>
-                Only use the web search interface we provide. 
+                <b>Only use the web search interface we provide.</b></br>
                 Do not switch browser tabs–-after three tab switches we will cancel your participation.
                 </p>
             </li>
             <li>
                 <p>
-                You can interact with the search results. 
-                A click on a document snippet will open this document in our own document viewer. 
-                We know that this document viewer is not perfect, but please stick with it. 
-                
+                <b>You cannot interact with the search results. </b></br>
+                We require you to judge the relevance of the document based on the snippet presented.
+                You cannot click on the document title to open it. If you want more information, submit another query.
                 </p>
             </li>
             <li> 
                 <p>
-                Keep your searches on the topic and avoid searches on unrelated topics. 
-                For example, if your topic is computer science, we consider searches for tomorrow's weather, the latest news on Brexit, movie reviews of the Avenger movies, as off-topic and will cancel your participation.
+                Keep your searches on the topic and avoid searches on unrelated topics.
+                We will consider off-topic searches, like tomorrow's weather, news on politics, or movie reviews of the Black Widow movie, as off-topic and may cancel your participation.
                 </p>
             </li>
         </ol>
         <hr/>
-        <p>Finally, a reminder before you continue:
-        please read the task description on the right-hand side of the search interface carefully. </p>
+        <p>Finally, a reminder before you continue: please read the task description carefully on the right-hand side of the search interface. </p>
         `
     });
 
@@ -231,7 +255,7 @@ const formData = function() {
     elements.push({
         title: "How often do you learn about a scientific topic (see the examples above) by searching the web?",
         name: "web-previous",
-        type: "radiogroup",
+        type: "comment",
         inputType: "text",
         width: 600,
         rows: 1,

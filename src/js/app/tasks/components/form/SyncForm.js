@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import Form from "./Form";
+import SyncStore from "../../../../stores/SyncStore";
+import SessionStore from "../../../../stores/SessionStore";
 
 class SyncForm extends React.PureComponent {
     constructor(props) {

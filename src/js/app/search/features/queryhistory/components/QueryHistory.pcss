@@ -1,24 +1,105 @@
 @import '../../../../Variables.pcss';
 
-.QueryHistory {
-
-
-
+    .QueryHistory {
+        
+        .tl {
+        border: 1px solid #BDC3C7;
+        border-radius: 5px;
+        box-shadow: 0px 1px 1px 0px #BFBFBF;
+        h3 {
+            margin-top: 5px;
+            margin-left: 15px;
+            font-size: 15px;
+        }
+        display: flex;
+        flex-direction: column;
+        height: 130px;
+        position: relative;
+                width: 300px;
+        margin: 10px 0 10px;
+        top: 10px;
+        left: 25px;
+        z-index:1;
+        width: 450px
+        }
+ .mid {
     border: 1px solid #BDC3C7;
     border-radius: 5px;
-
-    margin-top: 5px;
     box-shadow: 0px 1px 1px 0px #BFBFBF;
-
     h3 {
-        margin-top: 10px;
+        margin-top: 5px;
         margin-left: 15px;
+        font-size: 15px;
     }
-
-
     display: flex;
     flex-direction: column;
-    height: 200px;
+    height: 130px;
+    position: absolute;
+    margin: 20px 0 20px;
+    top: 350px;
+    left: 25px;
+    width: 450px;
+    z-index:1;
+    }
+    .ur {
+    border: 1px solid #BDC3C7;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #BFBFBF;
+    h3 {
+        margin-top: 5px;
+        margin-left: 15px;
+        font-size: 15px;
+    }
+    display: flex;
+    flex-direction: column;
+    height: 130px;
+    position: absolute;
+    top: 80px;
+    left: 67%;
+    width: 450px;
+    z-index:1;
+    }
+
+        .lr {
+    border: 1px solid #BDC3C7;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #BFBFBF;
+    h3 {
+        margin-top: 5px;
+        margin-left: 15px;
+        font-size: 15px;
+    }
+    display: flex;
+    flex-direction: column;
+    height: 130px;
+    position: absolute;
+    margin: 20px 0 20px;
+    top: 600px;
+    left: 800px;
+    width: 450px;
+    z-index:1;
+    }
+
+    .bl {
+    border: 1px solid #BDC3C7;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #BFBFBF;
+    h3 {
+        margin-top: 5px;
+        margin-left: 15px;
+        font-size: 15px;
+    }
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0 20px;
+    height: 130px;
+    position: absolute;
+    top: 700px;
+    left: 25px;
+    width: 450px;
+    z-index:1;
+    }
+
 
     .banner {
         cursor: pointer;
@@ -26,21 +107,25 @@
 
     .list {
         height: 100%;
-        overflow-y: auto;
+        overflow-y: scroll;
+
         .item {
-
             margin-right: 5px;
-
             padding: 0;
 
+            display: inline-block;
+            clear: left;
+            float: left;
 
             a {
                 margin-left: 5px;
-                color: $description-grey;
+                color: #1A0DAB;
+                text-decoration: none;
             }
 
-            a, a:hover, a:focus {
-                text-decoration: none;
+            a:hover, a:focus {
+                text-decoration: underline;
+                
             }
 
             .text {
@@ -49,40 +134,21 @@
             }
         }
     }
-
+    * {
+  scrollbar-width: 7px;
+  scrollbar-color: rgba(0, 0, 0, .5);
+}
+    
+            *::-webkit-scrollbar {
+            -webkit-appearance: none;
+             width: 7px;
+        }
+        *::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, .5);
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
     
 
-    .popup {
-        display: flex;
-        flex-flow: column;
-        height: 100%;
 
-        .header {
-            height: 40px;
-            padding: 10px;
-            border-bottom: 1px solid $border-color;
-            box-shadow: 0 0 15px 0 rgba(50, 50, 50, 0.04);
-
-            .close {
-                float: none;
-                color: red;
-                font-size: 16px;
-                font-weight: bold;
-                margin-bottom: 10px;
-
-                &:hover,
-                &:focus {
-                    color: #000;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-            }
-        }
-
-        .body {
-            flex: 1;
-            padding: 15px;
-            overflow: auto;
-        }
-    }
 }

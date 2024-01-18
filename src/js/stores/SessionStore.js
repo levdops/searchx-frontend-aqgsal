@@ -15,6 +15,22 @@ const SessionStore = Object.assign(EventEmitter.prototype, {
         let res = null;
         _getUserTask(AccountStore.getUserId(), id, params, (data) => {
             if (data) {
+                console.error("data after registering.");
+                console.log(data);
+                AccountStore.setGroup(data._id, data.members);
+                AccountStore.setTask(data.taskId, data.taskData);
+                res = data;
+            }
+            callback(res);
+        });
+    },
+    
+    getRegisteredUser(id, params, callback){
+        let res = null;
+        _getRegisteredUserTask(AccountStore.getUserId(), id, params, (data) => {
+            if (data) {
+                console.error("get registered user task.");
+                console.log(data);
                 AccountStore.setGroup(data._id, data.members);
                 AccountStore.setTask(data.taskId, data.taskData);
                 res = data;
@@ -113,6 +129,21 @@ function _getUserTask(userId, taskId, params, callback) {
             }
         })
 }
+
+function _getRegisteredUserTask(userId, taskId, params, callback) {
+    request
+        .get(`${process.env.REACT_APP_SERVER_URL}/v1/users/${userId}/task/${taskId}/registereduser?${Helpers.generateQueryString(params)}`)
+        .end((err, res) => {
+            console.error("registed user: ", res);
+            if (!err && res) {
+                const data = res.body.results;
+                callback(data);
+            } else {
+                callback(null);
+            }
+        })
+}
+
 function _postUserTask(userId, taskId, qdata, callback) {
     request
         .post(`${process.env.REACT_APP_SERVER_URL}/v1/users/${userId}/task/${taskId}/topic`)

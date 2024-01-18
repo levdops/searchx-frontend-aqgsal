@@ -12,10 +12,12 @@ class Form extends React.PureComponent {
         this.handleComplete = this.handleComplete.bind(this);
         this.handleCutCopyPaste = this.handleCutCopyPaste.bind(this);
         this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+        //this.handleResize = this.handleResize.bind(this);
     }
 
     componentDidMount() {
         document.addEventListener('visibilitychange', this.handleVisibilityChange);
+        //window.addEventListener('resize', this.handleResize);
     }
 
     componentWillUnmount() {
@@ -25,11 +27,10 @@ class Form extends React.PureComponent {
     render() {
         Survey.Survey.cssType = "bootstrap";
         Survey.defaultBootstrapCss.navigationButton = "btn btn-green";
-        
 
         let survey = new Survey.Model(this.props.formData);
         survey.completedHtml = `<div class='message'>${survey.completedHtml}</div>`;
-
+        
         return (
             <FormContainer>
                 <div onPaste={this.handleCutCopyPaste} onCut={this.handleCutCopyPaste} onCopy={this.handleCutCopyPaste}>
@@ -40,10 +41,20 @@ class Form extends React.PureComponent {
     }
 
     ////
+    // handleResize(){
+        
+    //         console.log("resizing")
+    //         let availHeight = window.screen.availHeight;
+    //         let outerHeight = window.outerHeight;
+            
+    //         this.props.onResize(availHeight - outerHeight);
+
+    // }
 
     handleComplete(res) {
         this.props.onComplete(res.data);
-        
+        // res.preventDefault();
+        console.log(res)
         document.removeEventListener("visibilitychange", this.handleVisibilityChange);
     }
 
@@ -61,11 +72,10 @@ class Form extends React.PureComponent {
     }
 
     handleVisibilityChange() {
-        if (document.hidden) {
-        
-            
+        if (document.visibilityState === 'visible'){ //document.hidden) {
             this.props.onSwitchPage();
         }
+
     }
 }
 
@@ -75,12 +85,14 @@ Form.propTypes = {
     onComplete: PropTypes.func.isRequired,
     onSwitchPage: PropTypes.func,
     disableCopy: PropTypes.bool,
+    //onResize: PropTypes.func,
 };
 
 Form.defaultProps = {
     formValidation: () => {},
     onSwitchPage: () => {},
     disableCopy: false,
+    //onResize: () => {}
 };
 
 export default Form;

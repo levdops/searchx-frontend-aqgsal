@@ -8,7 +8,7 @@ import Identicon from "identicon.js";
 import md5 from 'md5';
 
 const SearchResult = function ({
-                                   searchState, serpId, result, bookmarkClickHandler, urlClickHandler, provider,
+                                   searchState, serpId, result, bookmarkClickHandler, bookmarkCheckHandler, urlClickHandler, provider,
                                    collapsed, excludeClickHandler, hideCollapsedResultsHandler, isCollapsible, visited,
                                    index
                                }) {
@@ -18,13 +18,29 @@ const SearchResult = function ({
         initialBookmark = result.metadata.bookmark ? 1 : 0;
         initialExclude = result.metadata.exclude ? 1 : 0;
     }
+    let book_bool;
 
-    const bookmarkButton = <Rating
-        className="rating" emptySymbol="fa fa-bookmark-o" fullSymbol="fa fa-bookmark"
-        onClick={bookmarkClickHandler}
-        stop={1} initialRating={initialBookmark}
-        title="Save result"
-    />;
+    // let bc = localStorage.getItem("bookmark-count")
+    // // console.log("bc", bc)
+    // if (result.metadata.bookmark) {      
+    //     book_bool = false
+    // }
+    // else {
+    //     if (bc <=5){
+    //         book_bool = false
+    //     } else {
+
+    //         book_bool = true
+    //     } 
+    // }
+    // // console.log("book b/ool",book_bool)
+    // const bookmarkButton = <Rating
+    //     className="rating" emptySymbol="fa fa-bookmark-o" fullSymbol="fa fa-bookmark"
+    //     onClick={bookmarkClickHandler}
+    //     stop={1} initialRating={initialBookmark}
+    //     title="Save result"
+    //     readonly={book_bool}
+    // />;
 
     // TODO: use variant from SearchStore instead of defaultVariant
     const excludeButton = <div>
@@ -43,10 +59,10 @@ const SearchResult = function ({
         result: result,
         index: index,
         metadata: formatMetadata(result.metadata),
-        bookmarkButton: bookmarkButton,
-        excludeButton: excludeButton,
+        // bookmarkButton: bookmarkButton,
+        // excludeButton: excludeButton,
         urlClickHandler: urlClickHandler,
-        hideCollapsedResultsHandler: hideCollapsedResultsHandler,
+        // hideCollapsedResultsHandler: hideCollapsedResultsHandler,
         isCollapsible: isCollapsible,
         visited: visited
     };
@@ -56,7 +72,7 @@ const SearchResult = function ({
     return (
         <Collapse in={!collapsed}>
             <div>
-                <div className="SearchResult">
+                <div className="SearchResult" data-rank={props.index + 1} data-id={result.id} data-collectionid={result.collectionId}>
                     {view}
                 </div>
             </div>
@@ -96,11 +112,11 @@ function formatMetadata(metadata) {
         let formattedTime = date.toLocaleDateString();
         if (formattedTime === now) formattedTime = date.toLocaleTimeString();
 
-        elements.push(
-            <span>
-                <i className="fa fa-bookmark"/> <img src={iconUrl} alt={"User " + md5(metadata.bookmark.userId)}/>  {formattedTime}
-            </span>
-        );
+        // elements.push(
+        //     <span>
+        //         <i className="fa fa-bookmark"/> <img src={iconUrl} alt={"User " + md5(metadata.bookmark.userId)}/>  {formattedTime}
+        //     </span>
+        // );
     }
 
     return <div className="metadata">{elements}</div>;

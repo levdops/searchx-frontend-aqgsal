@@ -22,12 +22,12 @@ export default class SearchHeaderContainer extends React.Component {
         this.searchHandler = this.searchHandler.bind(this);
         this.queryChangeHandler = this.queryChangeHandler.bind(this);
         this.verticalChangeHandler = this.verticalChangeHandler.bind(this);
-        this.showSuggestionsHandler = this.showSuggestionsHandler.bind(this);
-        this.hideSuggestionsHandler = this.hideSuggestionsHandler.bind(this);
-        this.clickSuggestionHandler = this.clickSuggestionHandler.bind(this);
+        //this.showSuggestionsHandler = this.showSuggestionsHandler.bind(this);
+        //this.hideSuggestionsHandler = this.hideSuggestionsHandler.bind(this);
+        //this.clickSuggestionHandler = this.clickSuggestionHandler.bind(this);
     }
 
-    componentDidMount() {SearchStore.addChangeListener(this.changeHandler);}
+    componentWillMount() {SearchStore.addChangeListener(this.changeHandler);}
     componentWillUnmount() {SearchStore.removeChangeListener(this.changeHandler);}
 
     render() {
@@ -41,10 +41,10 @@ export default class SearchHeaderContainer extends React.Component {
             timer={this.props.timer}
             statusbar={this.props.statusbar}
             showAccountInfo={this.props.showAccountInfo}
-            hideSuggestionsHandler={this.hideSuggestionsHandler}
-            showSuggestionsHandler={this.showSuggestionsHandler}
-            clickSuggestionHandler={this.clickSuggestionHandler}
-            showSuggestions={this.state.showSuggestions}
+            // hideSuggestionsHandler={this.hideSuggestionsHandler}
+            // showSuggestionsHandler={this.showSuggestionsHandler}
+            // clickSuggestionHandler={this.clickSuggestionHandler}
+            // showSuggestions={this.state.showSuggestions}
             // these props do not update to changes
             userId={AccountStore.getUserId()}
             groupId={AccountStore.getGroupId()}
@@ -76,18 +76,17 @@ export default class SearchHeaderContainer extends React.Component {
         this.hideSuggestionsHandler();
         SearchActions.search(this.state.query, this.state.searchState.vertical, 1);
         SessionActions.getBookmarksAndExcludes();
-        SessionActions.clearSuggestions()
     }
 
     queryChangeHandler(query) {
         this.setState({
             query: query
         });
-        if (query.length >= 3) {
-            SessionActions.getSuggestions(query);
-        } else {
-            SessionActions.getSuggestions("");
-        }
+   	// if (query.length >= 3) {
+    //         SessionActions.getSuggestions(query);
+    //     } else {
+    //         SessionActions.clearSuggestions();
+    //     }
     }
 
     verticalChangeHandler(vertical) {
@@ -108,10 +107,10 @@ export default class SearchHeaderContainer extends React.Component {
     }
 
     showSuggestionsHandler() {
+        this.setState({ showSuggestions: true });
         if (this.state.query) {
             SessionActions.getSuggestions(this.state.query);
         }
-        this.setState({ showSuggestions: true });
     }
 
     clickSuggestionHandler(query) {

@@ -52,9 +52,10 @@ export default class Viewer extends React.Component  {
             log(LoggerEventTypes.DOCUMENT_SCROLL, metaInfo);
         };
 
+        var qid = localStorage.getItem("task-qid") ? localStorage.getItem("task-qid") : -1;
     
         return (
-            <Modal width="95%" height="90%">
+            <Modal width="50%" height="68%">
                 <div className="viewer" onMouseEnter={hoverEnterDocument} onMouseLeave={hoverLeaveDocument}
                      onScroll={scrollDocument}>
                     <div className="header">
@@ -69,7 +70,9 @@ export default class Viewer extends React.Component  {
                                 <RatingContainer url={this.props.url}/>,
                                 <span className="divider"/>
                             ]}
-                            <span className="close" onClick={closeDocument}><i className="fa fa-times"/></span>
+                            {qid < 0 && [
+                                <span className="close" onClick={closeDocument}><i className="fa fa-times"/></span>
+                            ]}
                         </div>
                     </div>
     

@@ -11,11 +11,11 @@ import Timer from "../components/Timer";
 
 import {log} from '../../../utils/Logger';
 import {LoggerEventTypes} from '../../../utils/LoggerEventTypes';
+import ReactAudioPlayer from 'react-audio-player';
 import StatusBar from "../components/GroupStatusBar";
 import SessionStore from "../../../stores/SessionStore";
 import {getTaskDescription} from "./Utils";
 import SearchActions from "../../../actions/SearchActions";
-import config from "../../../config";
 
 class Session extends React.PureComponent {
     constructor(props) {
@@ -30,6 +30,7 @@ class Session extends React.PureComponent {
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.handleBeforeUnload);
+        window.addEventListener('popstate', this.handleBeforeUnload);
 
         IntroStore.startIntro(getIntroSteps(), () => {
             const start = localStorage.getItem("timer-start") || Date.now();
@@ -38,11 +39,6 @@ class Session extends React.PureComponent {
                 start: start
             });
         });
-        if (this.state.currentTopic > 0) {
-            SearchActions.reset();
-        }
-        var audio = new Audio("/sounds/notification.mp3");
-        audio.play();
     }
     componentWillUnmount() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
@@ -56,22 +52,9 @@ class Session extends React.PureComponent {
     }
 
     render() {
-
-        if (localStorage.getItem("current-path") !== '/role-based/session') {
-            this.props.history.replace({
-                pathname: localStorage.getItem("current-path")
-            });
-        }
-
-        if (localStorage.getItem("invalid-user") === "true") {
-            this.props.history.replace({
-                pathname: '/disq'
-            });
-        }
-        
         const task = AccountStore.getTask();
         const t = this.state.currentTopic;
-        let duration = t === 0 ? constants.taskDuration + 2 : constants.taskDuration;
+        let duration = t === 0 ? constants.taskDuration + 1 : constants.taskDuration;
         const timer = (
             <div style={{marginTop: '10px', textAlign: 'center'}}>
                 <Timer start={this.state.start} duration={duration} onFinish={this.onFinish} style={{fontSize: '2em'}} showRemaining={true}/>
@@ -91,11 +74,12 @@ class Session extends React.PureComponent {
             log(LoggerEventTypes.TASK_CLOSE, metaInfo);
         };
 
-        const role = SessionStore.getMemberRole(AccountStore.getUserId());
-
-        if (role ===  "single") {
-            config.interface.chat = false;
+        let waited = false;
+        if (this.props.location.state) {
+            waited = this.props.location.state.waited;
         }
+
+        const role = SessionStore.getMemberRole(AccountStore.getUserId());
         const taskDescription = (
             
             <Collapsible open trigger="Your Task" transitionTime={3} onOpen={handleTaskOpen} onClose={handleTaskClose} >
@@ -109,14 +93,20 @@ class Session extends React.PureComponent {
 
             <hr/>
 
-            <font color="#9C9C9C"> <p> After 15 minutes the system will give your next search task. <b>DO NOT PRESS THE BROWSER BACK BUTTON!</b> This will invalidate your participation! </p> </font>
+            <font color="#9C9C9C"> <p> After 10 minutes the system will give your next search task. </p> </font>
 
 
             </Collapsible>
         );
 
         return (
-            <TaskedSession timer={timer} taskDescription={taskDescription} statusbar={statusbar} lastSession={false} firstSession={true}/>
+            <div>
+                {waited && <ReactAudioPlayer
+                    src="../sound/notification.mp3"
+                    autoPlay
+                />}
+                <TaskedSession timer={timer} taskDescription={taskDescription} statusbar={statusbar} lastSession={false} firstSession={true}/>
+            </div>
         )
     }
 
@@ -124,15 +114,14 @@ class Session extends React.PureComponent {
 
     onFinish() {
         const task = AccountStore.getTask();
+        SearchActions.reset();
         log(LoggerEventTypes.SESSION_END, {});
         if ((this.state.currentTopic+1) < task.data.topics.length ) {
             localStorage.setItem("current-topic", this.state.currentTopic+1);
-            localStorage.setItem("current-path", '/role-based/description_short');
             this.props.history.replace({
-                pathname: '/role-based/description_short'
+                pathname: '/role-based/description'
             });
         } else {
-            localStorage.setItem("current-path", '/role-based/posttest');
             this.props.history.replace({
                 pathname: '/role-based/posttest'
             });
@@ -184,6 +173,11 @@ function getIntroSteps() {
             {
                 element: '.Side',
                 intro: 'The recent queries and saved documents are with color-coded icons to show which collaborator initiated the action.',
+                position: 'left'
+            },
+            {
+                element: '.sc-launcher',
+                intro: 'Use the chat to discuss with your group about the task at hand. Do not use it for daily conversations.',
                 position: 'left'
             },
             {
