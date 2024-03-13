@@ -25,5 +25,5 @@ jobs:
                   REACT_APP_SERVER_URL: ${{ vars.REACT_APP_SERVER_URL }}
                   REACT_APP_RENDERER_URL: ${{ vars.REACT_APP_RENDERER_URL }}
 
-            # - name: Test
-            #   run: npm run test
+            - name: Test
+              run: npm run test
